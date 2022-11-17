@@ -11,6 +11,13 @@ const test_matrix = [
     [0, 1, 2, 3, 4, 5, 6, 7]
 ];
 
+class Position {
+    constructor(x, y) {
+        this.x = x;
+        this.y = y;
+    }
+}
+
 let match_three = [
     [0, 1, 2], [0, 0, 0]
 ];
@@ -77,3 +84,56 @@ function getTiles() {
         tiles.push(tiles_html[i].innerHTML);
     return tiles;
 }
+
+function dragElement(element) {
+    let pos_init = new Position(0, 0);
+    let pos_atual = new Position(0, 0);
+    let pos_final = new Position(0, 0);
+    let gear = createElementHTML('p', 'gear', 'selected-gear');   
+    element.onmousedown = dragMouseDown;
+  
+    function dragMouseDown(e) {
+        e = e || window.event;
+        e.preventDefault();
+        pos_init.x = e.clientX;
+        pos_init.y = e.clientY;
+        document.onmouseup = closeDragElement;
+        document.onmousemove = elementDrag;
+    }
+  
+    function elementDrag(e) {
+        e = e || window.event;
+        e.preventDefault();
+        pos_atual.x = pos_init.x - e.clientX;
+        pos_atual.y = pos_init.y - e.clientY;
+        pos_final.x = element.offsetLeft - pos_atual.x;
+        pos_final.y = element.offsetTop - pos_atual.y;
+
+        if(pos_final.x < element.offsetLeft - 25) {
+            pos_final.x = element.offsetLeft - 49;
+            pos_final.y = element.offsetTop  + 2;
+        }
+        else if(pos_final.x > element.offsetLeft + 25) {
+            pos_final.x = element.offsetLeft + 66;
+            pos_final.y = element.offsetTop  + 2;
+        }
+        else if(pos_final.y < element.offsetTop - 25) {
+            pos_final.x = element.offsetLeft + 11;
+            pos_final.y = element.offsetTop  - 56;
+        }
+        else if(pos_final.y > element.offsetTop + 25) {
+            pos_final.x = element.offsetLeft + 11;
+            pos_final.y = element.offsetTop  + 60;
+        }
+        gear.innerHTML = element.innerHTML;
+        board.appendChild(gear);
+
+        gear.style.left = (pos_final.x) + "px";
+        gear.style.top = (pos_final.y) + "px";
+    }
+  
+    function closeDragElement() {
+        document.onmouseup = null;
+        document.onmousemove = null;
+    }
+  }
