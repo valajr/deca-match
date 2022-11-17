@@ -1,0 +1,32 @@
+:root {
+    --board-background: #484848;
+    --tile-background: #989898;
+    --tile-highlight: #c8c8c8;
+}
+
+.main {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.board {
+    text-align: center;
+    background-color: var(--board-background);
+    border-radius: 5px;
+}
+
+.tile {
+    width: 50px;
+    height: 50px;
+    color: white;
+    background-color: var(--tile-background);
+    border: 2px inset white;
+    border-radius: 5px;
+}
+
+.tile:hover {
+    background-color: var(--tile-highlight);
+    cursor: pointer;
+}
