@@ -16,6 +16,12 @@ class Position {
         this.x = x;
         this.y = y;
     }
+
+    static sum(a, b) {
+        let x = parseInt(a.x) + b.x;
+        let y = parseInt(a.y) + b.y;
+        return new Position(x, y);
+    }
 }
 
 let match_three = [
@@ -71,7 +77,6 @@ function createBoard(rows, collumns) {
             line.appendChild(tile);
             aux_line.push(gear);
         }
-        console.log(board);
         board.appendChild(line);
         aux_board.push(aux_line);
     }
@@ -85,11 +90,17 @@ function getTiles() {
     return tiles;
 }
 
+function getPos(id) {
+    let separated_id = id.split("-");
+    return new Position(separated_id[0], separated_id[1]);
+}
+
 function dragElement(element) {
     let pos_init = new Position(0, 0);
-    let pos_atual = new Position(0, 0);
     let pos_final = new Position(0, 0);
-    let gear = createElementHTML('p', 'gear', 'selected-gear');   
+    let gear = createElementHTML('p', 'gear', 'selected-gear');
+    let side = null;
+
     element.onmousedown = dragMouseDown;
   
     function dragMouseDown(e) {
@@ -104,35 +115,55 @@ function dragElement(element) {
     function elementDrag(e) {
         e = e || window.event;
         e.preventDefault();
-        pos_atual.x = pos_init.x - e.clientX;
-        pos_atual.y = pos_init.y - e.clientY;
+        let pos_atual = new Position(pos_init.x - e.clientX, pos_init.y - e.clientY);
         pos_final.x = element.offsetLeft - pos_atual.x;
         pos_final.y = element.offsetTop - pos_atual.y;
 
-        if(pos_final.x < element.offsetLeft - 25) {
-            pos_final.x = element.offsetLeft - 49;
-            pos_final.y = element.offsetTop  + 2;
-        }
-        else if(pos_final.x > element.offsetLeft + 25) {
-            pos_final.x = element.offsetLeft + 66;
-            pos_final.y = element.offsetTop  + 2;
-        }
-        else if(pos_final.y < element.offsetTop - 25) {
-            pos_final.x = element.offsetLeft + 11;
-            pos_final.y = element.offsetTop  - 56;
-        }
-        else if(pos_final.y > element.offsetTop + 25) {
-            pos_final.x = element.offsetLeft + 11;
-            pos_final.y = element.offsetTop  + 60;
-        }
         gear.innerHTML = element.innerHTML;
         board.appendChild(gear);
+        if(pos_final.x < element.offsetLeft - 25) 
+            dragLeft();
+        else if(pos_final.x > element.offsetLeft + 25) 
+            dragRight();
+        else if(pos_final.y < element.offsetTop - 25) 
+            dragUp();
+        else if(pos_final.y > element.offsetTop + 25) 
+            dragDown();
 
         gear.style.left = (pos_final.x) + "px";
         gear.style.top = (pos_final.y) + "px";
     }
+
+    function dragLeft() {
+        pos_final.x = element.offsetLeft - 49;
+        pos_final.y = element.offsetTop  + 2;
+        side = new Position(0, -1);
+    }
+    function dragRight() {
+        pos_final.x = element.offsetLeft + 66;
+        pos_final.y = element.offsetTop  + 2;
+        side = new Position(0, 1);
+    }
+    function dragUp() {
+        pos_final.x = element.offsetLeft + 11;
+        pos_final.y = element.offsetTop  - 56;
+        side = new Position(-1, 0);
+    }
+    function dragDown() {
+        pos_final.x = element.offsetLeft + 11;
+        pos_final.y = element.offsetTop  + 60;
+        side = new Position(1, 0);
+    }
   
     function closeDragElement() {
+        let element_pos = getPos(element.id);
+        let other_gear_pos = Position.sum(element_pos, side);
+        let other_gear = document.getElementById(other_gear_pos.x + "-" + other_gear_pos.y);
+        if(other_gear) {
+            element.innerHTML = other_gear.innerHTML;
+            other_gear.innerHTML = gear.innerHTML;
+        }
+        gear.innerHTML = '';
         document.onmouseup = null;
         document.onmousemove = null;
     }
