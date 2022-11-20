@@ -54,15 +54,15 @@ function createBoard(rows, collumns) {
             let gear = gears[getRandomInt(0, 3)];
             let line_equal = false;
 
-            if(j > 1) {
-                let prev = aux_line[j-1];
-                let prev_prev = aux_line[j-2];
-                if(gear === prev && prev === prev_prev) {
-                    let new_gears = removeItem(gears, gear);
-                    gear = new_gears[getRandomInt(0, new_gears.length - 1)];
-                    line_equal = true;
-                }
-            }
+            // if(j > 1) {
+            //     let prev = aux_line[j-1];
+            //     let prev_prev = aux_line[j-2];
+            //     if(gear === prev && prev === prev_prev) {
+            //         let new_gears = removeItem(gears, gear);
+            //         gear = new_gears[getRandomInt(0, new_gears.length - 1)];
+            //         line_equal = true;
+            //     }
+            // }
             if(i > 1) {
                 let prev = aux_board[i-1][j];
                 let prev_prev = aux_board[i-2][j];
@@ -83,10 +83,16 @@ function createBoard(rows, collumns) {
 }
 
 function getTiles() {
-    let tiles_html = board.getElementsByClassName('tile');
+    let lines = board.getElementsByClassName('line');
     let tiles = [];
-    for(let i = 0; i < tiles_html.length; i++)
-        tiles.push(tiles_html[i].innerHTML);
+
+    for(let i = 0; i < lines.length; i++) {
+        let line_html = lines[i].getElementsByClassName('tile');
+        let line = [];
+        for(let j = 0; j < line_html.length; j++)
+            line.push(line_html[j].innerHTML);
+        tiles.push(line);
+    }
     return tiles;
 }
 
@@ -108,8 +114,8 @@ function dragElement(element) {
         e.preventDefault();
         pos_init.x = e.clientX;
         pos_init.y = e.clientY;
-        document.onmouseup = closeDragElement;
         document.onmousemove = elementDrag;
+        document.onmouseup = closeDragElement;
     }
   
     function elementDrag(e) {
@@ -163,8 +169,8 @@ function dragElement(element) {
             element.innerHTML = other_gear.innerHTML;
             other_gear.innerHTML = gear.innerHTML;
         }
-        gear.innerHTML = '';
+        gear.remove();
         document.onmouseup = null;
         document.onmousemove = null;
     }
-  }
+}
