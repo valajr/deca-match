@@ -1,3 +1,21 @@
+class Position {
+    constructor(x, y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    static sum(a, b) {
+        let x = parseInt(a.x) + b.x;
+        let y = parseInt(a.y) + b.y;
+        return new Position(x, y);
+    }
+
+    static getPos(id) {
+        let separated_id = id.split("-");
+        return new Position(separated_id[0], separated_id[1]);
+    }
+}
+
 const gears = ['blue', 'green', 'red', 'yellow'];
 
 const test_matrix = [
@@ -10,19 +28,6 @@ const test_matrix = [
     [1, 2, 3, 4, 5, 6, 7, 8],
     [0, 1, 2, 3, 4, 5, 6, 7]
 ];
-
-class Position {
-    constructor(x, y) {
-        this.x = x;
-        this.y = y;
-    }
-
-    static sum(a, b) {
-        let x = parseInt(a.x) + b.x;
-        let y = parseInt(a.y) + b.y;
-        return new Position(x, y);
-    }
-}
 
 let match_three = [
     [0, 1, 2], [0, 0, 0]
@@ -54,15 +59,15 @@ function createBoard(rows, collumns) {
             let gear = gears[getRandomInt(0, 3)];
             let line_equal = false;
 
-            // if(j > 1) {
-            //     let prev = aux_line[j-1];
-            //     let prev_prev = aux_line[j-2];
-            //     if(gear === prev && prev === prev_prev) {
-            //         let new_gears = removeItem(gears, gear);
-            //         gear = new_gears[getRandomInt(0, new_gears.length - 1)];
-            //         line_equal = true;
-            //     }
-            // }
+            if(j > 1) {
+                let prev = aux_line[j-1];
+                let prev_prev = aux_line[j-2];
+                if(gear === prev && prev === prev_prev) {
+                    let new_gears = removeItem(gears, gear);
+                    gear = new_gears[getRandomInt(0, new_gears.length - 1)];
+                    line_equal = true;
+                }
+            }
             if(i > 1) {
                 let prev = aux_board[i-1][j];
                 let prev_prev = aux_board[i-2][j];
@@ -74,6 +79,7 @@ function createBoard(rows, collumns) {
                 }
             }
             tile.innerHTML = gear;
+            tile.setAttribute('gearColor', gear);
             line.appendChild(tile);
             aux_line.push(gear);
         }
@@ -94,11 +100,6 @@ function getTiles() {
         tiles.push(line);
     }
     return tiles;
-}
-
-function getPos(id) {
-    let separated_id = id.split("-");
-    return new Position(separated_id[0], separated_id[1]);
 }
 
 function dragElement(element) {
@@ -162,9 +163,9 @@ function dragElement(element) {
     }
   
     function closeDragElement() {
-        let element_pos = getPos(element.id);
-        let other_gear_pos = Position.sum(element_pos, side);
-        let other_gear = document.getElementById(other_gear_pos.x + "-" + other_gear_pos.y);
+        let element_pos = Position.getPos(element.id);
+        last_move = Position.sum(element_pos, side);
+        let other_gear = document.getElementById(last_move.x + "-" + last_move.y);
         if(other_gear) {
             element.innerHTML = other_gear.innerHTML;
             other_gear.innerHTML = gear.innerHTML;

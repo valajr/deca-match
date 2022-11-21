@@ -21,4 +21,4 @@ function removeItem(list, value) {
       new_list.splice(index, 1);
     }
     return new_list;
-  }
+}
