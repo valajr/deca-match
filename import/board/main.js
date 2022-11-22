@@ -88,6 +88,17 @@ function createBoard(rows, collumns) {
     }
 }
 
+function updateBoard() {
+    for(let i = 0; i < matches.length; i++) {
+        for(let j = 0; j < matches[i].length; j++) {
+            board_html[matches[i][j]].innerHTML = gears[getRandomInt(0, 3)];
+            board_html[matches[i][j]].setAttribute('gearColor', gears[getRandomInt(0, 3)]);
+        }
+    }
+    matches = [];
+    countScore();
+}
+
 function getTiles() {
     let lines = board.getElementsByClassName('line');
     let tiles = [];
@@ -100,6 +111,25 @@ function getTiles() {
         tiles.push(line);
     }
     return tiles;
+}
+
+function createSpecial(type, match) {
+    let board = getTiles();
+    let last_tile = last_move.x*board[0].length + last_move.y;
+    console.log(last_move, last_tile);
+    let special_tile;
+
+    if(match.includes(last_tile)) {
+        special_tile = last_tile;
+        last_tile = null;
+    }
+    else
+        special_tile = match[getRandomInt(0, match.length - 1)];
+
+    console.log(special_tile);
+    removeItem(match, special_tile);
+
+    board_html[special_tile].innerHTML = type;
 }
 
 function dragElement(element) {
@@ -171,6 +201,7 @@ function dragElement(element) {
             other_gear.innerHTML = gear.innerHTML;
         }
         gear.remove();
+        countScore();
         document.onmouseup = null;
         document.onmousemove = null;
     }

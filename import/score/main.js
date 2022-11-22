@@ -57,19 +57,6 @@ function identifyMatches() {
     }
 }
 
-function createSpecial(type, match) {
-    let board = getTiles();
-    let last_tile = last_move.x*board.length + last_move.y;
-    let special_tile;
-
-    if(match.includes(last_tile))
-        special_tile = last_tile;
-    else
-        special_tile = match[getRandomInt(0, match.length)];
-
-    console.log(type, special_tile);
-}
-
 function countScore() {
     let round_score = 0;
     identifyMatches();
@@ -93,4 +80,7 @@ function countScore() {
                 createSpecial('selector', matches[i]);
         }
     }
+
+    if(matches.length)
+        setTimeout(updateBoard, 1000);
 }
