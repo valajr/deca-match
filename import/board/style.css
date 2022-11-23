@@ -1,7 +1,7 @@
 :root {
-    --board-background: #484848;
-    --tile-background: #989898;
-    --tile-highlight: #c8c8c8;
+    --board-background: #474747;
+    --tile-background: #c8c8c8;
+    --tile-highlight: #949494;
 }
 
 .main {
@@ -32,7 +32,17 @@
     cursor: pointer;
 }
 
-#selected-gear {
+.selected-gear {
     position: absolute;
     z-index: 10;
+}
+
+.gear {
+    position: relative;
+    animation: fall 1s;
+}
+
+@keyframes fall {
+    from {top: -56px};
+    to {top: 0};
 }

@@ -62,25 +62,25 @@ function countScore() {
     identifyMatches();
     
     console.log(matches);
-    for(let i = 0; i < matches.length; i++) {
-        switch(matches[i].length) {
-            case 3:
-                round_score += 3;
-                break;
-            case 4:
-                round_score += 5;
-                createSpecial('line', matches[i]);
-                break;
-            case 5:
-                round_score += 8;
-                createSpecial('bomb', matches[i]);
-                break;
-            default:
-                round_score += matches[i].length + 5;
-                createSpecial('selector', matches[i]);
-        }
-    }
+    // for(let i = 0; i < matches.length; i++) {
+    //     switch(matches[i].length) {
+    //         case 3:
+    //             round_score += 3;
+    //             break;
+    //         case 4:
+    //             round_score += 5;
+    //             createSpecial('line', matches[i]);
+    //             break;
+    //         case 5:
+    //             round_score += 8;
+    //             createSpecial('bomb', matches[i]);
+    //             break;
+    //         default:
+    //             round_score += matches[i].length + 5;
+    //             createSpecial('selector', matches[i]);
+    //     }
+    // }
 
     if(matches.length)
-        setTimeout(updateBoard, 1000);
+        setTimeout(updateBoard, 2000);
 }

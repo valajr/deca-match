@@ -16,38 +16,16 @@ class Position {
     }
 }
 
-const gears = ['blue', 'green', 'red', 'yellow'];
+const gears = ['water', 'earth', 'fire', 'air'];
 
-const test_matrix = [
-    [1, 1, 1, 2, 2, 2, 3, 3],
-    [1, 1, 2, 2, 3, 3, 4, 4], 
-    [1, 2, 3, 4, 5, 6, 7, 8],
-    [1, 1, 1, 1, 2, 2, 2, 2],
-    [1, 1, 1, 2, 2, 2, 3, 3],
-    [1, 1, 2, 2, 3, 3, 4, 4],
-    [1, 2, 3, 4, 5, 6, 7, 8],
-    [0, 1, 2, 3, 4, 5, 6, 7]
-];
+function createGear(pos, gear) {
+    let img = createElementHTML('img', 'gear');
+    img.src = `import/imgs/${gear}.png`;
 
-let match_three = [
-    [0, 1, 2], [0, 0, 0]
-];
-
-let match_four = [
-    [0, 1, 2, 3], [0, 0, 0, 0]
-];
-
-let match_five = [
-    [0, 1, 2, 3, 4], [0, 0, 0, 0, 0], [0, 1, 2, 2, 2]
-];
-
-let match_six = [
-    [0, 1, 2, 3, 4, 5], [0, 0, 0, 0, 0, 0], [0, 1, 2, 2, 2, 3]
-];
-
-let match_seven = [
-    [0, 1, 2, 3, 4, 5, 6], [0, 0, 0, 0, 0, 0, 0], [0, 1, 2, 2, 2, 3, 3]
-];
+    pos.innerHTML = '';
+    pos.appendChild(img);
+    pos.setAttribute('Element', gear);
+}
 
 function createBoard(rows, collumns) {
     let aux_board = [];
@@ -78,8 +56,7 @@ function createBoard(rows, collumns) {
                     gear = new_gears[getRandomInt(0, new_gears.length - 1)];
                 }
             }
-            tile.innerHTML = gear;
-            tile.setAttribute('gearColor', gear);
+            createGear(tile, gear);
             line.appendChild(tile);
             aux_line.push(gear);
         }
@@ -91,8 +68,17 @@ function createBoard(rows, collumns) {
 function updateBoard() {
     for(let i = 0; i < matches.length; i++) {
         for(let j = 0; j < matches[i].length; j++) {
-            board_html[matches[i][j]].innerHTML = gears[getRandomInt(0, 3)];
-            board_html[matches[i][j]].setAttribute('gearColor', gears[getRandomInt(0, 3)]);
+            let board = getTiles();
+            board_html[matches[i][j]].innerHTML = '';
+            for(let k = -1; k < matches[i][j]; k+=board.length) {
+                let pos = matches[i][j] - k -1;
+                if(pos - board.length < 0)
+                    createGear(board_html[pos], gears[getRandomInt(0, 3)]);
+                else {
+                    let upper_gear = board_html[pos - board.length].getAttribute('Element');
+                    createGear(board_html[pos], upper_gear);
+                }
+            }
         }
     }
     matches = [];
@@ -107,7 +93,7 @@ function getTiles() {
         let line_html = lines[i].getElementsByClassName('tile');
         let line = [];
         for(let j = 0; j < line_html.length; j++)
-            line.push(line_html[j].innerHTML);
+            line.push(line_html[j].getAttribute('Element'));
         tiles.push(line);
     }
     return tiles;
@@ -135,7 +121,7 @@ function createSpecial(type, match) {
 function dragElement(element) {
     let pos_init = new Position(0, 0);
     let pos_final = new Position(0, 0);
-    let gear = createElementHTML('p', 'gear', 'selected-gear');
+    let gear = createElementHTML('img', 'selected-gear');
     let side = null;
 
     element.onmousedown = dragMouseDown;
@@ -156,7 +142,7 @@ function dragElement(element) {
         pos_final.x = element.offsetLeft - pos_atual.x;
         pos_final.y = element.offsetTop - pos_atual.y;
 
-        gear.innerHTML = element.innerHTML;
+        gear.src = `import/imgs/${element.getAttribute('Element')}.png`;
         board.appendChild(gear);
         if(pos_final.x < element.offsetLeft - 25) 
             dragLeft();
@@ -197,8 +183,13 @@ function dragElement(element) {
         last_move = Position.sum(element_pos, side);
         let other_gear = document.getElementById(last_move.x + "-" + last_move.y);
         if(other_gear) {
-            element.innerHTML = other_gear.innerHTML;
-            other_gear.innerHTML = gear.innerHTML;
+            let aux = element.getAttribute('Element');
+            element.setAttribute('Element', other_gear.getAttribute('Element'));
+            other_gear.setAttribute('Element', aux);
+
+            aux = element.firstElementChild.src;
+            element.firstElementChild.src = other_gear.firstElementChild.src;
+            other_gear.firstElementChild.src = aux;
         }
         gear.remove();
         countScore();
