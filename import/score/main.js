@@ -35,9 +35,6 @@ function identifyMatches() {
 
                 if(atual == prev && prev == prev_prev) {
                     let pos = i*board[i].length + j;
-                    board_html[pos-2].style.backgroundColor = 'red';
-                    board_html[pos-1].style.backgroundColor = 'red';
-                    board_html[pos].style.backgroundColor = 'red';
                     classifyMatches([pos-2, pos-1, pos]);
                 }
             }
@@ -47,9 +44,6 @@ function identifyMatches() {
 
                 if(atual === prev && prev === prev_prev) {
                     let pos = i*board[i].length + j;
-                    board_html[pos-2*board[i].length].style.backgroundColor = 'red';
-                    board_html[pos-1*board[i].length].style.backgroundColor = 'red';
-                    board_html[pos].style.backgroundColor = 'red';
                     classifyMatches([pos-2*board[i].length, pos-1*board[i].length, pos]);
                 }
             }
@@ -61,7 +55,6 @@ function countScore() {
     let round_score = 0;
     identifyMatches();
     
-    console.log(matches);
     // for(let i = 0; i < matches.length; i++) {
     //     switch(matches[i].length) {
     //         case 3:

@@ -43,6 +43,6 @@
 }
 
 @keyframes fall {
-    from {top: -56px};
+    from {top: -100%};
     to {top: 0};
 }

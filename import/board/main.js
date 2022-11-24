@@ -102,7 +102,6 @@ function getTiles() {
 function createSpecial(type, match) {
     let board = getTiles();
     let last_tile = last_move.x*board[0].length + last_move.y;
-    console.log(last_move, last_tile);
     let special_tile;
 
     if(match.includes(last_tile)) {
@@ -112,7 +111,6 @@ function createSpecial(type, match) {
     else
         special_tile = match[getRandomInt(0, match.length - 1)];
 
-    console.log(special_tile);
     removeItem(match, special_tile);
 
     board_html[special_tile].innerHTML = type;
