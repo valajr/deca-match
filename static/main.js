@@ -8,4 +8,5 @@ let tiles = document.getElementsByClassName('tile');
 for(let i = 0; i < tiles.length; i++)
     dragElement(tiles[i]);
 
-animation();
+animation('player', 'idle');
+animation('monster', 'idle');

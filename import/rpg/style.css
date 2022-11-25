@@ -1,8 +1,8 @@
 .animation { 
-    background-image: url(../imgs/tst.png);
     background-repeat: no-repeat; 
     height: 32px; 
     width: 32px;
-    transform: scale(4);
+    transform: scale(3);
+    margin: 64px;
     image-rendering: pixelated;
 }
