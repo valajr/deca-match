@@ -2,6 +2,7 @@
     --board-background: #474747;
     --tile-background: #c8c8c8;
     --tile-highlight: #949494;
+    --tile-destroied: #474747;
 }
 
 .main {
@@ -25,6 +26,7 @@
     background-color: var(--tile-background);
     border: 2px inset white;
     border-radius: 5px;
+    animation: creation 1s;
 }
 
 .tile:hover {
@@ -43,6 +45,11 @@
 }
 
 @keyframes fall {
-    from {top: -100%};
+    from {top: -100%;};
     to {top: 0};
+}
+
+@keyframes creation {
+    from {background-color: var(--tile-destroied);}
+    to {background-color: var(--tile-background);}
 }

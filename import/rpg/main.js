@@ -13,13 +13,18 @@ const FRAMES = {
     'walk+attack': 6
 }
 
+const ANIMATION = {
+    'monster': null,
+    'player': null
+}
+
 function animation (robot, type) {
     let frameWidth = 32;
     let frames = FRAMES[type];
     let div = document.getElementById(robot);
     let frame = 0;
     div.style.backgroundImage = `url(import/imgs/${robot}_${type}.png)`;
-    setInterval( () => {
+    ANIMATION[robot] = setInterval( () => {
         let frameOffset = (++frame % frames) * -frameWidth;
         div.style.backgroundPosition = frameOffset +"px 0px";}, 100);
 }
