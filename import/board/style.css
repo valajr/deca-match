@@ -26,7 +26,12 @@
     background-color: var(--tile-background);
     border: 2px inset white;
     border-radius: 5px;
-    animation: creation 1s;
+    animation: creation 0.5s;
+}
+
+.tile.destroyed {
+    animation: destruction 0.5s,
+               delay-animation 0.5s;
 }
 
 .tile:hover {
@@ -41,7 +46,7 @@
 
 .gear {
     position: relative;
-    animation: fall 1s;
+    animation: fall 0.5s;
 }
 
 @keyframes fall {
@@ -53,3 +58,13 @@
     from {background-color: var(--tile-destroied);}
     to {background-color: var(--tile-background);}
 }
+
+@keyframes destruction {
+    from {background-color: var(--tile-destroied);}
+    to {background-color: var(--tile-background);}
+}
+
+@keyframes delay-animation {
+    0% {background-color: var(--tile-background);}
+    100% {background-color: var(--tile-background);}
+  }

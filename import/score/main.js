@@ -1,14 +1,22 @@
 const board_html = document.getElementsByClassName('tile');
 let matches = [];
+let round_score = 0;
+
+function destroyTiles(tiles) {
+    for(let i = 0; i < tiles.length; i ++) {
+        if(!board_html[tiles[i]].classList.contains('destroyed'))
+            board_html[tiles[i]].classList.add('destroyed');
+    }
+}
 
 function classifyMatches(match) {
     let continuous = false;
-    let exitent_match = [];
+    let existent_match = [];
     let new_match = [];
     for(let i = 0; i < matches.length; i++) {
         for(let j = 0; j < match.length; j++) {
             if(matches[i].includes(match[j])) {
-                exitent_match = matches[i];
+                existent_match = matches[i];
                 if(continuous)
                     new_match = removeItem(new_match, match[j]);
                 else
@@ -17,10 +25,14 @@ function classifyMatches(match) {
             }
         }
     }
-    if(continuous)
-        exitent_match.push(...new_match);
-    else
+    if(continuous) {
+        existent_match.push(...new_match);
+        destroyTiles(new_match);
+    }
+    else {
         matches.push(match);
+        destroyTiles(match);
+    }
 }
 
 function identifyMatches() {
@@ -52,7 +64,6 @@ function identifyMatches() {
 }
 
 function countScore() {
-    let round_score = 0;
     identifyMatches();
     
     // for(let i = 0; i < matches.length; i++) {
@@ -75,5 +86,5 @@ function countScore() {
     // }
 
     if(matches.length)
-        setTimeout(updateBoard, 2000);
+        setTimeout(updateBoard, 1000);
 }

@@ -24,6 +24,7 @@ function createGear(pos, gear) {
 
     pos.innerHTML = '';
     pos.appendChild(img);
+    pos.classList.remove('destroyed');
     pos.setAttribute('Element', gear);
 }
 
