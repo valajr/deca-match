@@ -2,9 +2,17 @@ const board_html = document.getElementsByClassName('tile');
 let matches = [];
 let round_score = 0;
 
-function destroyTiles(tiles) {
-    for(let i = 0; i < tiles.length; i ++)
-        board_html[tiles[i]].classList.add('destroyed');
+function blockBoard(score=false) {
+    let modal = document.getElementsByClassName('block-modal')[0];
+    modal.innerHTML = '';
+    modal.style.display = 'block';
+    if(score)
+        modal.innerHTML = round_score;
+}
+
+function unlockBoard() {
+    let modal = document.getElementsByClassName('block-modal')[0];
+    modal.style.display = 'none';
 }
 
 function classifyMatches(match) {
@@ -67,22 +75,27 @@ function countScore() {
     for(let i = 0; i < matches.length; i++) {
         switch(matches[i].length) {
             case 3:
-                round_score += 3;
+                round_score += 30;
                 break;
             case 4:
-                round_score += 5;
+                round_score += 50;
                 // createSpecial('line', matches[i]);
                 break;
             case 5:
-                round_score += 8;
+                round_score += 80;
                 // createSpecial('bomb', matches[i]);
                 break;
             default:
-                round_score += matches[i].length + 5;
+                round_score += (matches[i].length + 5)*10;
                 // createSpecial('selector', matches[i]);
         }
     }
 
     if(matches.length)
         setTimeout(updateBoard, 1000);
+    else {
+        attackEnemy('player');
+        blockBoard(true);
+        setTimeout(unlockBoard, 4400);
+    }
 }

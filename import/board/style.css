@@ -12,16 +12,24 @@
     align-items: center;
 }
 
+.board-game {
+    position: relative;
+}
+
 .board {
+    width: 510px;
+    height: 510px;
     text-align: center;
     background-color: var(--board-background);
     border-radius: 5px;
     position: relative;
+    border-spacing: 2px;
+    border-collapse: separate;
 }
 
 .tile {
-    width: 50px;
-    height: 50px;
+    width: 55.95px;
+    height: 55.95px;
     color: white;
     background-color: var(--tile-background);
     border: 2px inset white;
@@ -41,13 +49,28 @@
 
 .selected-gear {
     position: absolute;
-    z-index: 10;
+    z-index: 2;
 }
 
 .gear {
-    position: relative;
     animation: fall 0.5s;
+    padding-top: 4px;
 }
+
+.block-modal {
+    display: none;
+    z-index: 3;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 510px;
+    height: 510px;
+    overflow: hidden;
+    background-color: rgba(0,0,0,0.4);
+    border-radius: 5px;
+}
+
+
 
 @keyframes fall {
     from {top: -100%;};

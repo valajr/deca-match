@@ -67,29 +67,23 @@ function createBoard(rows, collumns) {
 }
 
 function updateBoard() {
-    let matched = false;
     for(let i = 0; i < matches.length; i++) {
         for(let j = 0; j < matches[i].length; j++) {
             let board = getTiles();
             board_html[matches[i][j]].innerHTML = '';
             for(let k = -1; k < matches[i][j]; k+=board.length) {
                 let pos = matches[i][j] - k -1;
-                if(pos - board.length < 0) {
+                if(pos - board.length < 0)
                     createGear(board_html[pos], gears[getRandomInt(0, 3)]);
-                    matched = true;
-                }
                 else {
                     let upper_gear = board_html[pos - board.length].getAttribute('Element');
                     createGear(board_html[pos], upper_gear);
-                    matched = true;
                 }
             }
         }
     }
-    if(matched)
-        countScore();
-    else 
-        attackEnemy('player');
+    matches = [];
+    countScore();
 }
 
 function getTiles() {
@@ -104,6 +98,11 @@ function getTiles() {
         tiles.push(line);
     }
     return tiles;
+}
+
+function destroyTiles(tiles) {
+    for(let i = 0; i < tiles.length; i ++)
+        board_html[tiles[i]].classList.add('destroyed');
 }
 
 function createSpecial(type, match) {
@@ -158,6 +157,11 @@ function dragElement(element) {
             dragUp();
         else if(pos_final.y > element.offsetTop + 25) 
             dragDown();
+        else{
+            pos_final.x = element.offsetLeft + 32;
+            pos_final.y = element.offsetTop + 32;
+            side = new Position(0, 0);
+        }
 
         gear.style.left = (pos_final.x) + "px";
         gear.style.top = (pos_final.y) + "px";
@@ -165,22 +169,22 @@ function dragElement(element) {
 
     function dragLeft() {
         pos_final.x = element.offsetLeft - 49;
-        pos_final.y = element.offsetTop  + 2;
+        pos_final.y = element.offsetTop  + 15;
         side = new Position(0, -1);
     }
     function dragRight() {
-        pos_final.x = element.offsetLeft + 66;
-        pos_final.y = element.offsetTop  + 2;
+        pos_final.x = element.offsetLeft + 81;
+        pos_final.y = element.offsetTop  + 15;
         side = new Position(0, 1);
     }
     function dragUp() {
-        pos_final.x = element.offsetLeft + 11;
-        pos_final.y = element.offsetTop  - 56;
+        pos_final.x = element.offsetLeft + 15;
+        pos_final.y = element.offsetTop  - 49;
         side = new Position(-1, 0);
     }
     function dragDown() {
-        pos_final.x = element.offsetLeft + 11;
-        pos_final.y = element.offsetTop  + 60;
+        pos_final.x = element.offsetLeft + 15;
+        pos_final.y = element.offsetTop  + 81;
         side = new Position(1, 0);
     }
   

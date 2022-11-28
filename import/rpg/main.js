@@ -1,3 +1,11 @@
+class Robot {
+    constructor(hp, defense=0) {
+        this.max_hp = hp;
+        this.hp = hp;
+        this.defense = defense;
+    }
+}
+
 const FRAMES = {
     'attack': 4,
     'attack_2': 6,
@@ -32,8 +40,7 @@ function animation (robot, type) {
     let div = document.getElementById(robot);
     let frame = 0;
     div.style.backgroundImage = `url(import/imgs/${robot}_${type}.png)`;
-    if(type !== 'attack')
-        div.setAttribute('class', 'animation');
+    div.setAttribute('class', 'animation');
     div.classList.add(type);
     ANIMATION[robot] = setInterval(() => {
         let frameOffset = (++frame % frames) * -frameWidth;

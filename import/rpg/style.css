@@ -51,6 +51,12 @@
 #monster.walk {
     animation: monsterWalking 2s ease-out forwards;
 }
+#player.attack {
+    left: 380px;
+}
+#monster.attack {
+    right: 380px;
+}
 #player.back {
     transform: scale(3) rotateY(180deg);
     animation: playerWalking 2s ease-out reverse;
