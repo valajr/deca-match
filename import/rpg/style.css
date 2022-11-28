@@ -1,6 +1,7 @@
 .rpg {
     width: 500px;
-    border: 5px solid black;
+    border: 5px groove #1DE22E;
+    margin-bottom: 30px;
 }
 .background {
     position: relative;
@@ -12,11 +13,12 @@
     background-image: url('../imgs/sky.png');
     background-repeat: repeat-x;
     height: 100%;
-    width: 500px;
+    width: 100%;
     overflow: hidden;
     background-size: 52%;
     image-rendering: pixelated;
     z-index: -1;
+    /* animation: skypass 5s infinite linear; */
 }
 .grass {
     background-image: url('../imgs/grass.png');
@@ -26,10 +28,12 @@
     image-rendering: pixelated;
 }
 #player {
-    left: 0;
+    left: 32px;
+    bottom: 32px;
 }
 #monster {
-    right: 0;
+    right: 32px;
+    bottom: 32px;
 }
 
 .animation { 
@@ -38,7 +42,35 @@
     height: 32px; 
     width: 32px;
     transform: scale(3);
-    margin: 64px;
     image-rendering: pixelated;
     z-index: 10;
+}
+#player.walk {
+    animation: playerWalking 2s ease-out forwards;
+}
+#monster.walk {
+    animation: monsterWalking 2s ease-out forwards;
+}
+#player.back {
+    transform: scale(3) rotateY(180deg);
+    animation: playerWalking 2s ease-out reverse;
+}
+#monster.back {
+    transform: scale(3) rotateY(180deg);
+    animation: monsterWalking 2s ease-out reverse;
+}
+
+@keyframes skypass {
+    from {background-position: 0;}
+    to   {background-position: 108%;}
+}
+
+@keyframes playerWalking {
+    from {left: 32px;}
+    to   {left: 380px;}
+}
+
+@keyframes monsterWalking {
+    from {right: 32px;}
+    to   {right: 380px;}    
 }

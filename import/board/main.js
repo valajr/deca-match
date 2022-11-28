@@ -67,23 +67,29 @@ function createBoard(rows, collumns) {
 }
 
 function updateBoard() {
+    let matched = false;
     for(let i = 0; i < matches.length; i++) {
         for(let j = 0; j < matches[i].length; j++) {
             let board = getTiles();
             board_html[matches[i][j]].innerHTML = '';
             for(let k = -1; k < matches[i][j]; k+=board.length) {
                 let pos = matches[i][j] - k -1;
-                if(pos - board.length < 0)
+                if(pos - board.length < 0) {
                     createGear(board_html[pos], gears[getRandomInt(0, 3)]);
+                    matched = true;
+                }
                 else {
                     let upper_gear = board_html[pos - board.length].getAttribute('Element');
                     createGear(board_html[pos], upper_gear);
+                    matched = true;
                 }
             }
         }
     }
-    matches = [];
-    countScore();
+    if(matched)
+        countScore();
+    else 
+        attackEnemy('player');
 }
 
 function getTiles() {
@@ -137,6 +143,7 @@ function dragElement(element) {
     function elementDrag(e) {
         e = e || window.event;
         e.preventDefault();
+        round_score = 0;
         let pos_atual = new Position(pos_init.x - e.clientX, pos_init.y - e.clientY);
         pos_final.x = element.offsetLeft - pos_atual.x;
         pos_final.y = element.offsetTop - pos_atual.y;

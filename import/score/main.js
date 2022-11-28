@@ -3,10 +3,8 @@ let matches = [];
 let round_score = 0;
 
 function destroyTiles(tiles) {
-    for(let i = 0; i < tiles.length; i ++) {
-        if(!board_html[tiles[i]].classList.contains('destroyed'))
-            board_html[tiles[i]].classList.add('destroyed');
-    }
+    for(let i = 0; i < tiles.length; i ++)
+        board_html[tiles[i]].classList.add('destroyed');
 }
 
 function classifyMatches(match) {
@@ -66,24 +64,24 @@ function identifyMatches() {
 function countScore() {
     identifyMatches();
     
-    // for(let i = 0; i < matches.length; i++) {
-    //     switch(matches[i].length) {
-    //         case 3:
-    //             round_score += 3;
-    //             break;
-    //         case 4:
-    //             round_score += 5;
-    //             createSpecial('line', matches[i]);
-    //             break;
-    //         case 5:
-    //             round_score += 8;
-    //             createSpecial('bomb', matches[i]);
-    //             break;
-    //         default:
-    //             round_score += matches[i].length + 5;
-    //             createSpecial('selector', matches[i]);
-    //     }
-    // }
+    for(let i = 0; i < matches.length; i++) {
+        switch(matches[i].length) {
+            case 3:
+                round_score += 3;
+                break;
+            case 4:
+                round_score += 5;
+                // createSpecial('line', matches[i]);
+                break;
+            case 5:
+                round_score += 8;
+                // createSpecial('bomb', matches[i]);
+                break;
+            default:
+                round_score += matches[i].length + 5;
+                // createSpecial('selector', matches[i]);
+        }
+    }
 
     if(matches.length)
         setTimeout(updateBoard, 1000);
