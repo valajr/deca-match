@@ -7,7 +7,7 @@ function blockBoard(score=false) {
     modal.innerHTML = '';
     modal.style.display = 'block';
     if(score)
-        modal.innerHTML = round_score;
+        modal.innerHTML = '-' + round_score;
 }
 
 function unlockBoard() {

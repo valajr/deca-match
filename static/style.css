@@ -1,4 +1,10 @@
+@font-face {
+    font-family: uldFont;
+    src: url(../import/fonts/Upper\ Left\ Down.ttf);
+}
+
 .main {
     display: flex;
     flex-direction: column;
+    font-family: uldFont;
 }
