@@ -2,6 +2,7 @@
     width: 500px;
     border: 5px groove #1DE22E;
     margin-bottom: 30px;
+    overflow: hidden;
 }
 .background {
     position: relative;
@@ -64,6 +65,15 @@
     transform: scale(3) rotateY(180deg);
     animation: monsterWalking 2s ease-out reverse;
 }
+#player.come {
+    animation: playerComing 2s ease-out forwards;
+}
+#monster.come {
+    animation: monsterComing 2s ease-out forwards;
+}
+#player.wins {
+    animation: playerWins 2s ease-out forwards;
+}
 
 @keyframes skypass {
     from {background-position: 0;}
@@ -74,8 +84,19 @@
     from {left: 32px;}
     to   {left: 380px;}
 }
-
 @keyframes monsterWalking {
     from {right: 32px;}
-    to   {right: 380px;}    
+    to   {right: 380px;}
+}
+@keyframes playerComing {
+    from {left: -348px;}
+    to   {left: 32px;}
+}
+@keyframes monsterComing {
+    from {right: -348px;}
+    to   {right: 32px;}
+}
+@keyframes playerWins {
+    from {left: 32px;}
+    to   {left: 550px;}
 }

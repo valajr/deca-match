@@ -42,6 +42,7 @@ function createGear(pos, gear) {
 
 function createBoard(rows, collumns) {
     let aux_board = [];
+    board.innerHTML = '';
     for(let i = 0; i < rows; i++) {
         let line = createElementHTML('tr', 'line');
         let aux_line = [];
@@ -166,7 +167,8 @@ function dragElement(element) {
         pos_final.y = element.offsetTop - pos_atual.y;
 
         gear.src = `import/imgs/${element.getAttribute('Element')}.png`;
-        board.appendChild(gear);
+        let board_game = document.getElementsByClassName('board-game')[0];
+        board_game.appendChild(gear);
         if(pos_final.x < element.offsetLeft - 25)
             dragLeft();
         else if(pos_final.x > element.offsetLeft + 25)
@@ -188,25 +190,25 @@ function dragElement(element) {
 
     function dragLeft() {
         pos_final.x = element.offsetLeft - 49;
-        pos_final.y = element.offsetTop  + 15;
+        pos_final.y = element.offsetTop  + 13;
         side = new Position(0, -1);
         irregular = false;
     }
     function dragRight() {
-        pos_final.x = element.offsetLeft + 81;
-        pos_final.y = element.offsetTop  + 15;
+        pos_final.x = element.offsetLeft + 79;
+        pos_final.y = element.offsetTop  + 13;
         side = new Position(0, 1);
         irregular = false;
     }
     function dragUp() {
         pos_final.x = element.offsetLeft + 15;
-        pos_final.y = element.offsetTop  - 49;
+        pos_final.y = element.offsetTop  - 52;
         side = new Position(-1, 0);
         irregular = false;
     }
     function dragDown() {
         pos_final.x = element.offsetLeft + 15;
-        pos_final.y = element.offsetTop  + 81;
+        pos_final.y = element.offsetTop  + 77;
         side = new Position(1, 0);
         irregular = false;
     }

@@ -82,7 +82,7 @@ function countScore() {
         setTimeout(updateBoard, 1000);
     else {
         if(round_score) {
-            attackEnemy('player');
+            attack('player', 'monster');
             blockBoard('-' + round_score);
             setTimeout(()=>{unlockBoard(); startTimer()}, 4400);
         }
