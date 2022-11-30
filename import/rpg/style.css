@@ -17,8 +17,7 @@
     overflow: hidden;
     background-size: 52%;
     image-rendering: pixelated;
-    z-index: -1;
-    animation: skypass 5s infinite linear;
+    animation: skypass 10s infinite linear;
 }
 .grass {
     background-image: url('../imgs/grass.png');

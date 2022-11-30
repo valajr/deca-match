@@ -2,19 +2,6 @@ const board_html = document.getElementsByClassName('tile');
 let matches = [];
 let round_score = 0;
 
-function blockBoard(score=false) {
-    let modal = document.getElementsByClassName('block-modal')[0];
-    modal.innerHTML = '';
-    modal.style.display = 'block';
-    if(score)
-        modal.innerHTML = '-' + round_score;
-}
-
-function unlockBoard() {
-    let modal = document.getElementsByClassName('block-modal')[0];
-    modal.style.display = 'none';
-}
-
 function classifyMatches(match) {
     let continuous = false;
     let existent_match = [];
@@ -94,8 +81,14 @@ function countScore() {
     if(matches.length)
         setTimeout(updateBoard, 1000);
     else {
-        attackEnemy('player');
-        blockBoard(true);
-        setTimeout(unlockBoard, 4400);
+        if(round_score) {
+            attackEnemy('player');
+            blockBoard('-' + round_score);
+            setTimeout(()=>{unlockBoard(); startTimer()}, 4400);
+        }
+        else {
+            invalidMove();
+            restartTimer();
+        }
     }
 }

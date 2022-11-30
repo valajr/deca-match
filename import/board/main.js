@@ -18,6 +18,18 @@ class Position {
 
 const gears = ['water', 'earth', 'fire', 'air'];
 
+function blockBoard(message='') {
+    let modal = document.getElementsByClassName('block-modal')[0];
+    modal.style.display = 'block';
+    modal.innerHTML = message;
+}
+
+function unlockBoard() {
+    let modal = document.getElementsByClassName('block-modal')[0];
+    modal.innerHTML = '';
+    modal.style.display = 'none';
+}
+
 function createGear(pos, gear) {
     let img = createElementHTML('img', 'gear');
     img.src = `import/imgs/${gear}.png`;
@@ -105,6 +117,11 @@ function destroyTiles(tiles) {
         board_html[tiles[i]].classList.add('destroyed');
 }
 
+function invalidMove() {
+    blockBoard('Nope!');
+    setTimeout(unlockBoard, 500);
+}
+
 function createSpecial(type, match) {
     let board = getTiles();
     let last_tile = last_move.x*board[0].length + last_move.y;
@@ -127,6 +144,7 @@ function dragElement(element) {
     let pos_final = new Position(0, 0);
     let gear = createElementHTML('img', 'selected-gear');
     let side = null;
+    let irregular = false;
 
     element.onmousedown = dragMouseDown;
   
@@ -149,18 +167,19 @@ function dragElement(element) {
 
         gear.src = `import/imgs/${element.getAttribute('Element')}.png`;
         board.appendChild(gear);
-        if(pos_final.x < element.offsetLeft - 25) 
+        if(pos_final.x < element.offsetLeft - 25)
             dragLeft();
-        else if(pos_final.x > element.offsetLeft + 25) 
+        else if(pos_final.x > element.offsetLeft + 25)
             dragRight();
-        else if(pos_final.y < element.offsetTop - 25) 
+        else if(pos_final.y < element.offsetTop - 25)
             dragUp();
-        else if(pos_final.y > element.offsetTop + 25) 
+        else if(pos_final.y > element.offsetTop + 25)
             dragDown();
         else{
-            pos_final.x = element.offsetLeft + 32;
-            pos_final.y = element.offsetTop + 32;
+            pos_final.x = element.offsetLeft + 16;
+            pos_final.y = element.offsetTop + 16;
             side = new Position(0, 0);
+            irregular = true;
         }
 
         gear.style.left = (pos_final.x) + "px";
@@ -171,38 +190,50 @@ function dragElement(element) {
         pos_final.x = element.offsetLeft - 49;
         pos_final.y = element.offsetTop  + 15;
         side = new Position(0, -1);
+        irregular = false;
     }
     function dragRight() {
         pos_final.x = element.offsetLeft + 81;
         pos_final.y = element.offsetTop  + 15;
         side = new Position(0, 1);
+        irregular = false;
     }
     function dragUp() {
         pos_final.x = element.offsetLeft + 15;
         pos_final.y = element.offsetTop  - 49;
         side = new Position(-1, 0);
+        irregular = false;
     }
     function dragDown() {
         pos_final.x = element.offsetLeft + 15;
         pos_final.y = element.offsetTop  + 81;
         side = new Position(1, 0);
+        irregular = false;
     }
   
     function closeDragElement() {
-        let element_pos = Position.getPos(element.id);
-        last_move = Position.sum(element_pos, side);
-        let other_gear = document.getElementById(last_move.x + "-" + last_move.y);
-        if(other_gear) {
-            let aux = element.getAttribute('Element');
-            element.setAttribute('Element', other_gear.getAttribute('Element'));
-            other_gear.setAttribute('Element', aux);
+        if(!irregular) {
+            let element_pos = Position.getPos(element.id);
+            last_move = Position.sum(element_pos, side);
+            let other_gear = document.getElementById(last_move.x + "-" + last_move.y);
+            if(other_gear) {
+                let aux = element.getAttribute('Element');
+                element.setAttribute('Element', other_gear.getAttribute('Element'));
+                other_gear.setAttribute('Element', aux);
 
-            aux = element.firstElementChild.src;
-            element.firstElementChild.src = other_gear.firstElementChild.src;
-            other_gear.firstElementChild.src = aux;
+                aux = element.firstElementChild.src;
+                element.firstElementChild.src = other_gear.firstElementChild.src;
+                other_gear.firstElementChild.src = aux;
+            }
+            gear.remove();
+            stopTimer();
+            countScore();
         }
-        gear.remove();
-        countScore();
+        else {
+            invalidMove();
+            gear.remove();
+        }
+
         document.onmouseup = null;
         document.onmousemove = null;
     }

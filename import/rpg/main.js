@@ -76,3 +76,10 @@ function attackEnemy(robot) {
         }
     }, 2000);
 }
+
+function enemyTurn() {
+    attackEnemy('monster');
+    
+    blockBoard('ouch!');
+    setTimeout(unlockBoard, 4400);
+}

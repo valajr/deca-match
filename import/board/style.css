@@ -1,17 +1,3 @@
-:root {
-    --board-background: #474747;
-    --tile-background: #c8c8c8;
-    --tile-highlight: #949494;
-    --tile-destroied: #474747;
-}
-
-.main {
-    width: 100%;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-}
-
 .board-game {
     position: relative;
     overflow: hidden;

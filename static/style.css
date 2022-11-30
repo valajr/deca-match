@@ -3,8 +3,49 @@
     src: url(../import/fonts/Upper\ Left\ Down.ttf);
 }
 
+:root {
+    --board-background: #474747;
+    --tile-background: #c8c8c8;
+    --tile-highlight: #949494;
+    --tile-destroied: #474747;
+    --progress-timer: #474747;
+    --progress-timer-value: #c8c8c8;
+    --progress-expired: #292929;
+}
+
+* {
+    margin: 0 auto;
+    padding: 0;
+}
 .main {
     display: flex;
     flex-direction: column;
     font-family: uldFont;
+    background-color: dimgray;
+    width: 100%;
+    height: 100vh;
+}
+
+.timer {
+    width: 300px;
+}
+
+#timerBar {
+    width: 100%;
+}
+progress { 
+    appearance: none; 
+}
+#timerBar::-webkit-progress-inner-element {
+}
+#timerBar::-webkit-progress-bar { 
+    border: 2px solid var(--progress-timer);
+    border-radius: 5px;
+}
+#timerBar::-webkit-progress-value { 
+    background: var(--progress-timer-value);
+    border-radius: 3px; 
+}
+#timerBar.expired::-webkit-progress-value { 
+    background: var(--progress-expired); 
 }
