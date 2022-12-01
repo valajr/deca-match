@@ -136,7 +136,7 @@ function updateHP(robot) {
 
 function createRpg() {
     if(LVL == 0)
-        ROBOTS.player = new Robot(10);
+        ROBOTS.player = new Robot(30);
     ROBOTS.monster = new Robot(2**(LVL + 5));
 
     animation('player', 'walk');
