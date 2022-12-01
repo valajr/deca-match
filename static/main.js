@@ -17,18 +17,17 @@ function startTimer(time=0) {
         }
     }, 1000)
 }
-
-function stopTimer() {
-    clearInterval(timer);
-}
-
 function restartTimer() {
     startTimer(timer_bar.getAttribute('value'));
+}
+function stopTimer() {
+    clearInterval(timer);
 }
 
 function startGame() {
     createRpg();
     unlockBoard();
+    stopTimer();
     setTimeout(() => {
         startTimer();
         createBoard(8, 8);

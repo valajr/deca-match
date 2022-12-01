@@ -11,6 +11,7 @@
     --progress-timer: #474747;
     --progress-timer-value: #c8c8c8;
     --progress-expired: #292929;
+    --red-gear: #FF3E24;
 }
 
 * {
@@ -35,8 +36,6 @@
 }
 progress { 
     appearance: none; 
-}
-#timerBar::-webkit-progress-inner-element {
 }
 #timerBar::-webkit-progress-bar { 
     border: 2px solid var(--progress-timer);

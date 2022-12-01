@@ -32,7 +32,6 @@ function stopAnimation(robot) {
     else
         clearInterval(ANIMATION.monster);
 }
-
 function animation (robot, type) {
     stopAnimation(robot);
     let frameWidth = 32;
@@ -46,7 +45,6 @@ function animation (robot, type) {
         let frameOffset = (++frame % frames) * -frameWidth;
         div.style.backgroundPosition = frameOffset +"px 0px";}, 100);
 }
-
 function returnBack(robot) {
     let div = document.getElementById(robot);
     animation(robot, 'walk');
@@ -59,25 +57,31 @@ function returnBack(robot) {
 function defeated(robot) {
     LVL++;
     animation(robot, 'death');
-    if(robot === 'monster'){
-        setTimeout(()=> {
-            stopAnimation(robot);
-            let div = document.getElementById(robot);
-            div.style.backgroundImage = `url(import/imgs/empty.png)`;
+    stopTimer();
+    setTimeout(()=> {
+        board.innerHTML = '';
+        stopAnimation(robot);
+        let dead = document.getElementById(robot);
+        dead.style.backgroundImage = `url(import/imgs/empty.png)`;
+        hideHP(robot);
+        if(robot === 'monster'){
+            blockBoard('WIN!!');
             setTimeout(()=> {
                 animation('player', 'walk');
-                stopTimer();
-                blockBoard();
-                board.innerHTML = '';
                 let player = document.getElementById('player');
                 player.classList.add('wins');
-                setTimeout(startGame, 2000);                
+                setTimeout(startGame, 2000);
             }, 1300);
-        }, 800);
-    }
-    else {
-        location.reload();
-    }
+        }
+        else {
+            LVL = 0;
+            blockBoard('Loose! :(');
+            setTimeout(() => {
+                hideHP('monster');
+                startGame()
+            }, 1300);
+        }
+    }, 800);
 }
 
 function attack(aggressor, victim) {
@@ -90,6 +94,7 @@ function attack(aggressor, victim) {
         else
             ROBOTS.player.hp -= ROBOTS.monster.attack;
 
+        updateHP(victim);
         setTimeout(() => {
             animation(victim, 'idle');
             returnBack(aggressor);
@@ -106,9 +111,32 @@ function enemyTurn() {
     setTimeout(()=>{unlockBoard(); startTimer()}, 4400);
 }
 
+function showHP() {
+    let player = document.getElementById('player');
+    let player_hp = createElementHTML('progress', 'hp', 'playerHP');
+    let monster = document.getElementById('monster');
+    let monster_hp = createElementHTML('progress', 'hp', 'monsterHP');
+
+    player_hp.setAttribute('value', ROBOTS.player.hp);
+    player_hp.setAttribute('max', ROBOTS.player.max_hp);
+    monster_hp.setAttribute('value', ROBOTS.monster.hp);
+    monster_hp.setAttribute('max', ROBOTS.monster.max_hp);
+
+    player.appendChild(player_hp);
+    monster.appendChild(monster_hp);
+}
+function hideHP(robot) {
+    let robot_hp = document.getElementById(`${robot}HP`);
+    robot_hp.remove();
+}
+function updateHP(robot) {
+    let robot_hp = document.getElementById(`${robot}HP`);
+    robot_hp.setAttribute('value', ROBOTS[robot].hp);
+}
+
 function createRpg() {
     if(LVL == 0)
-        ROBOTS.player = new Robot(50);
+        ROBOTS.player = new Robot(10);
     ROBOTS.monster = new Robot(2**(LVL + 5));
 
     animation('player', 'walk');
@@ -121,7 +149,7 @@ function createRpg() {
     setTimeout(() => {
         animation('player', 'idle');
         animation('monster', 'idle');
-        
+        showHP();
     }, 2000);
 }
 
