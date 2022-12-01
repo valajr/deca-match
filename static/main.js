@@ -1,6 +1,5 @@
 function startTimer(time=0) {
     let max = timer_bar.getAttribute('max');
-    const TIMER_INTERVAL = 10;
 
     timer_bar.classList.remove('expired');
     timer_bar.setAttribute('value', 0);
@@ -13,9 +12,9 @@ function startTimer(time=0) {
         else if(time == max) {
             timer_bar.classList.add('expired');
             enemyTurn();
-            clearInterval(timer);
+            stopTimer();
         }
-    }, 1000)
+    }, 1000);
 }
 function restartTimer() {
     startTimer(timer_bar.getAttribute('value'));
@@ -38,6 +37,7 @@ function startGame() {
 }
 
 const timer_bar = document.getElementById('timerBar');
+const TIMER_INTERVAL = 10;
 let timer;
 const board = document.getElementsByClassName('board')[0];
 let last_move = null;

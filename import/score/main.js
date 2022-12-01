@@ -1,6 +1,7 @@
 const board_html = document.getElementsByClassName('tile');
 let matches = [];
 let round_score = 0;
+let score = 0;
 
 function classifyMatches(match) {
     let continuous = false;
@@ -85,6 +86,7 @@ function countScore() {
             attack('player', 'monster');
             blockBoard('-' + round_score);
             setTimeout(()=>{unlockBoard(); startTimer()}, 4400);
+            score += round_score;
         }
         else {
             invalidMove();

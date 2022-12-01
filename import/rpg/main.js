@@ -1,4 +1,5 @@
 class Robot {
+    is_dead = false;
     constructor(hp, attack=10) {
         this.max_hp = hp;
         this.hp = hp;
@@ -56,6 +57,7 @@ function returnBack(robot) {
 
 function defeated(robot) {
     LVL++;
+    ROBOTS[robot].is_dead = true;
     animation(robot, 'death');
     stopTimer();
     setTimeout(()=> {
@@ -68,6 +70,7 @@ function defeated(robot) {
             blockBoard('WIN!!');
             setTimeout(()=> {
                 animation('player', 'walk');
+                hideHP('player');
                 let player = document.getElementById('player');
                 player.classList.add('wins');
                 setTimeout(startGame, 2000);
@@ -75,11 +78,13 @@ function defeated(robot) {
         }
         else {
             LVL = 0;
-            blockBoard('Loose! :(');
-            setTimeout(() => {
-                hideHP('monster');
-                startGame()
-            }, 1300);
+            blockBoard('Loose!');
+            stopTimer();
+            let button = createElementHTML('button', 'restart-button', '', resetRpg);
+            button.innerHTML = 'Restart';
+
+            let rpg_screen = document.getElementsByClassName('rpg')[0];
+            rpg_screen.appendChild(button);
         }
     }, 800);
 }
@@ -108,7 +113,12 @@ function enemyTurn() {
     attack('monster', 'player');
     
     blockBoard('ouch!');
-    setTimeout(()=>{unlockBoard(); startTimer()}, 4400);
+    setTimeout(()=>{
+        if(ROBOTS.player.is_dead)
+            return;
+        unlockBoard(); 
+        startTimer();
+    }, 4400);
 }
 
 function showHP() {
@@ -136,7 +146,7 @@ function updateHP(robot) {
 
 function createRpg() {
     if(LVL == 0)
-        ROBOTS.player = new Robot(30);
+        ROBOTS.player = new Robot(10);
     ROBOTS.monster = new Robot(2**(LVL + 5));
 
     animation('player', 'walk');
@@ -153,3 +163,9 @@ function createRpg() {
     }, 2000);
 }
 
+function resetRpg() {
+    hideHP('monster');
+    let button = document.getElementsByClassName('restart-button')[0];
+    button.remove();
+    startGame();
+}

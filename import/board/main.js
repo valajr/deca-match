@@ -23,7 +23,6 @@ function blockBoard(message='') {
     modal.style.display = 'block';
     modal.innerHTML = message;
 }
-
 function unlockBoard() {
     let modal = document.getElementsByClassName('block-modal')[0];
     modal.innerHTML = '';
