@@ -1,6 +1,6 @@
 class Robot {
     is_dead = false;
-    constructor(hp, attack=10) {
+    constructor(hp, attack=0) {
         this.max_hp = hp;
         this.hp = hp;
         this.attack = attack;
@@ -78,7 +78,7 @@ function defeated(robot) {
         }
         else {
             LVL = 0;
-            blockBoard('Loose!');
+            blockBoard(`Loose! <br> score: ${score}`);
             stopTimer();
             let button = createElementHTML('button', 'restart-button', '', resetRpg);
             button.innerHTML = 'Restart';
@@ -147,7 +147,7 @@ function updateHP(robot) {
 function createRpg() {
     if(LVL == 0)
         ROBOTS.player = new Robot(50);
-    ROBOTS.monster = new Robot(2**(LVL + 5));
+    ROBOTS.monster = new Robot(2**(LVL + 5), 10 + LVL*2);
 
     animation('player', 'walk');
     let player = document.getElementById('player');
